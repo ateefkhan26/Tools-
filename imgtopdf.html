@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to PDF Converter | Ateef Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f59e0b;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f5f9;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 0 0 var(--radius) var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .converter-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .upload-area {
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+      background: #f8fafc;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .upload-area i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .upload-area h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-area p {
+      color: var(--gray);
+    }
+
+    #file-input {
+      display: none;
+    }
+
+    .preview-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .preview-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-item .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .preview-item:hover .remove-btn {
+      opacity: 1;
+    }
+
+    .options {
+      margin-top: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.875rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn i {
+      font-size: 1rem;
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #e67e22;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .author-name {
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .converter-card {
+        padding: 1.5rem;
+      }
+      
+      .upload-area {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Image to PDF Converter</h1>
+    <p>Create beautiful PDFs from your images in seconds</p>
+  </header>
+
+  <div class="container">
+    <div class="converter-card">
+      <div class="upload-area" id="upload-area">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <h3>Upload Your Images</h3>
+        <p>Drag & drop images here or click to browse</p>
+        <input type="file" id="file-input" accept="image/*" multiple>
+      </div>
+
+      <div id="preview-container" class="preview-container" style="display: none;">
+        <!-- Preview images will be added here -->
+      </div>
+
+      <div class="options">
+        <div class="form-group">
+          <label for="pdf-name">PDF File Name</label>
+          <input type="text" id="pdf-name" class="form-control" placeholder="my-document.pdf" value="my-document.pdf">
+        </div>
+
+        <div class="form-group">
+          <label for="page-size">Page Size</label>
+          <select id="page-size" class="form-control">
+            <option value="a4">A4 (210 × 297 mm)</option>
+            <option value="letter">Letter (8.5 × 11 in)</option>
+            <option value="legal">Legal (8.5 × 14 in)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="page-layout">Layout</label>
+          <select id="page-layout" class="form-control">
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="margin-size">Margin Size (mm)</label>
+          <input type="range" id="margin-size" class="form-control" min="0" max="30" value="10">
+        </div>
+
+        <button id="generate-btn" class="btn btn-block">
+          <i class="fas fa-file-pdf"></i> Generate PDF
+        </button>
+
+        <button id="clear-btn" class="btn btn-secondary btn-block" style="margin-top: 1rem;">
+          <i class="fas fa-trash-alt"></i> Clear All
+        </button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Made with <i class="fas fa-heart" style="color: #ef4444;"></i> by <span class="author-name">𝗔 𝗧 𝗘 𝗘 𝗙   𝗞 𝗛 𝗔 𝗡²⁶</span></p>
+      <p>Visit <a href="https://ateefstore.blogspot.com/?m=0" target="_blank">ATEEF STORE</a> for more amazing tools</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadArea = document.getElementById('upload-area');
+      const fileInput = document.getElementById('file-input');
+      const previewContainer = document.getElementById('preview-container');
+      const generateBtn = document.getElementById('generate-btn');
+      const clearBtn = document.getElementById('clear-btn');
+      let files = [];
+
+      // Handle drag and drop
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--primary)';
+        uploadArea.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#cbd5e1';
+        uploadArea.style.backgroundColor = '#f8fafc';
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#cbd5e1';
+        uploadArea.style.backgroundColor = '#f8fafc';
+        
+        if (e.dataTransfer.files.length > 0) {
+          handleFiles(e.dataTransfer.files);
+        }
+      });
+
+      // Handle click to browse
+      uploadArea.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      // Handle file selection
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+          handleFiles(fileInput.files);
+        }
+      });
+
+      // Handle files
+      function handleFiles(selectedFiles) {
+        files = Array.from(selectedFiles);
+        updatePreview();
+      }
+
+      // Update preview
+      function updatePreview() {
+        previewContainer.innerHTML = '';
+        
+        if (files.length > 0) {
+          previewContainer.style.display = 'grid';
+          
+          files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              const previewItem = document.createElement('div');
+              previewItem.className = 'preview-item';
+              
+              previewItem.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <button class="remove-btn" data-index="${index}">
+                  <i class="fas fa-times"></i>
+                </button>
+              `;
+              
+              previewContainer.appendChild(previewItem);
+              
+              // Add remove button event
+              previewItem.querySelector('.remove-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                files.splice(index, 1);
+                updatePreview();
+              });
+            };
+            reader.readAsDataURL(file);
+          });
+        } else {
+          previewContainer.style.display = 'none';
+        }
+      }
+
+      // Generate PDF
+      generateBtn.addEventListener('click', () => {
+        if (files.length === 0) {
+          alert('Please upload at least one image');
+          return;
+        }
+        
+        // In a real implementation, you would generate the PDF here
+        alert('PDF generation would happen here with ' + files.length + ' images');
+        
+        // This is where you would typically use a library like jsPDF or pdf-lib
+        // to actually create the PDF from the images
+      });
+
+      // Clear all
+      clearBtn.addEventListener('click', () => {
+        files = [];
+        fileInput.value = '';
+        updatePreview();
+      });
+    });
+  </script>
+</body>
+</html>
