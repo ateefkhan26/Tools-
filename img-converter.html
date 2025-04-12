@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter | Ateef Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --border: #dee2e6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .ad-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tool-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .tool-header h1 {
+            font-weight: 600;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .tool-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .author-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        
+        .tool-body {
+            padding: 30px;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .converter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .option-group select, .option-group input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            background: white;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #3a56d4;
+        }
+        
+        .result-area {
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #218838;
+        }
+        
+        .quality-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .quality-option input[type="range"] {
+            flex: 1;
+        }
+        
+        .quality-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        @media (max-width: 600px) {
+            .converter-options {
+                flex-direction: column;
+            }
+            
+            .tool-body {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- AdSense Top Banner -->
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <div class="tool-card">
+            <div class="tool-header">
+                <h1 onclick="window.location.href='https://ateefstore.blogspot.com/?m=0'">Ateef Store</h1>
+                <p>Image Converter Tool</p>
+                <div class="author-badge" onclick="window.location.href='https://ateefstore.blogspot.com/?m=0'">by Ateef Khan</div>
+            </div>
+            
+            <div class="tool-body">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop your image here</h3>
+                    <p>or click to browse files</p>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                </div>
+                
+                <div class="converter-options">
+                    <div class="option-group">
+                        <label for="format">Output Format</label>
+                        <select id="format">
+                            <option value="png">PNG (Lossless)</option>
+                            <option value="jpeg">JPG (Compressed)</option>
+                            <option value="webp">WEBP (Modern)</option>
+                            <option value="bmp">BMP (Uncompressed)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="quality">Quality</label>
+                        <div class="quality-option">
+                            <input type="range" id="quality" min="10" max="100" value="85">
+                            <span class="quality-value" id="qualityValue">85</span>%
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" id="convertBtn">Convert Image</button>
+                
+                <div class="result-area" id="resultArea">
+                    <h3>Your Converted Image</h3>
+                    <img id="preview" class="preview-img" alt="Converted image preview">
+                    <a id="downloadBtn" class="download-btn">
+                        <i class="fas fa-download"></i> Download Image
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AdSense Bottom Banner -->
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const formatSelect = document.getElementById('format');
+        const qualitySlider = document.getElementById('quality');
+        const qualityValue = document.getElementById('qualityValue');
+        const convertBtn = document.getElementById('convertBtn');
+        const resultArea = document.getElementById('resultArea');
+        const previewImg = document.getElementById('preview');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        // Update quality value display
+        qualitySlider.addEventListener('input', () => {
+            qualityValue.textContent = qualitySlider.value;
+        });
+        
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4361ee';
+            uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#dee2e6';
+            uploadArea.style.backgroundColor = 'transparent';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#dee2e6';
+            uploadArea.style.backgroundColor = 'transparent';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                updateFileName();
+            }
+        });
+        
+        // Handle file selection
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', updateFileName);
+        
+        function updateFileName() {
+            if (fileInput.files.length) {
+                const fileName = fileInput.files[0].name.length > 30 ? 
+                    fileInput.files[0].name.substring(0, 27) + '...' : 
+                    fileInput.files[0].name;
+                uploadArea.innerHTML = `
+                    <i class="fas fa-file-image"></i>
+                    <h3>${fileName}</h3>
+                    <p>Click to change file</p>
+                `;
+            }
+        }
+        
+        // Conversion function
+        convertBtn.addEventListener('click', convertImage);
+        
+        function convertImage() {
+            if (!fileInput.files.length) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            convertBtn.disabled = true;
+            convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
+            
+            const file = fileInput.files[0];
+            const format = formatSelect.value;
+            const quality = qualitySlider.value / 100;
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    let mimeType;
+                    switch(format) {
+                        case 'jpeg': mimeType = 'image/jpeg'; break;
+                        case 'png': mimeType = 'image/png'; break;
+                        case 'webp': mimeType = 'image/webp'; break;
+                        case 'bmp': mimeType = 'image/bmp'; break;
+                        default: mimeType = 'image/png';
+                    }
+                    
+                    try {
+                        const convertedDataUrl = canvas.toDataURL(mimeType, quality);
+                        previewImg.src = convertedDataUrl;
+                        
+                        downloadBtn.href = convertedDataUrl;
+                        downloadBtn.download = `converted-image.${format}`;
+                        downloadBtn.innerHTML = `<i class="fas fa-download"></i> Download as ${format.toUpperCase()}`;
+                        
+                        resultArea.style.display = 'block';
+                        resultArea.scrollIntoView({ behavior: 'smooth' });
+                    } catch (error) {
+                        alert('Conversion failed: ' + error.message);
+                    } finally {
+                        convertBtn.disabled = false;
+                        convertBtn.innerHTML = 'Convert Image';
+                    }
+                };
+                
+                img.onerror = function() {
+                    alert('Error loading image. Please try another file.');
+                    convertBtn.disabled = false;
+                    convertBtn.innerHTML = 'Convert Image';
+                };
+                
+                img.src = e.target.result;
+            };
+            
+            reader.onerror = function() {
+                alert('Error reading file. Please try another image.');
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = 'Convert Image';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+          </html>
