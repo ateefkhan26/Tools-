@@ -6,6 +6,8 @@
   <title>Image to PDF Converter | Ateef Store</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <style>
     :root {
       --primary: #6366f1;
@@ -236,6 +238,27 @@
       display: inline-block;
     }
 
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
@@ -272,6 +295,11 @@
 
       <div id="preview-container" class="preview-container" style="display: none;">
         <!-- Preview images will be added here -->
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Generating PDF...</p>
       </div>
 
       <div class="options">
@@ -319,12 +347,16 @@
   </div>
 
   <script>
+    // Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+
     document.addEventListener('DOMContentLoaded', function() {
       const uploadArea = document.getElementById('upload-area');
       const fileInput = document.getElementById('file-input');
       const previewContainer = document.getElementById('preview-container');
       const generateBtn = document.getElementById('generate-btn');
       const clearBtn = document.getElementById('clear-btn');
+      const loading = document.getElementById('loading');
       let files = [];
 
       // Handle drag and drop
@@ -363,7 +395,7 @@
 
       // Handle files
       function handleFiles(selectedFiles) {
-        files = Array.from(selectedFiles);
+        files = Array.from(selectedFiles).filter(file => file.type.startsWith('image/'));
         updatePreview();
       }
 
@@ -404,18 +436,128 @@
       }
 
       // Generate PDF
-      generateBtn.addEventListener('click', () => {
+      generateBtn.addEventListener('click', async () => {
         if (files.length === 0) {
           alert('Please upload at least one image');
           return;
         }
         
-        // In a real implementation, you would generate the PDF here
-        alert('PDF generation would happen here with ' + files.length + ' images');
+        // Show loading indicator
+        loading.style.display = 'block';
+        generateBtn.disabled = true;
         
-        // This is where you would typically use a library like jsPDF or pdf-lib
-        // to actually create the PDF from the images
+        try {
+          // Create new PDF document
+          const pdfName = document.getElementById('pdf-name').value.replace('.pdf', '') + '.pdf';
+          const pageSize = document.getElementById('page-size').value;
+          const pageLayout = document.getElementById('page-layout').value;
+          const marginSize = parseInt(document.getElementById('margin-size').value);
+          
+          // Get page dimensions in mm
+          let pageWidth, pageHeight;
+          switch(pageSize) {
+            case 'a4':
+              pageWidth = 210;
+              pageHeight = 297;
+              break;
+            case 'letter':
+              pageWidth = 215.9;
+              pageHeight = 279.4;
+              break;
+            case 'legal':
+              pageWidth = 215.9;
+              pageHeight = 355.6;
+              break;
+            default:
+              pageWidth = 210;
+              pageHeight = 297;
+          }
+          
+          // Swap dimensions for landscape
+          if (pageLayout === 'landscape') {
+            [pageWidth, pageHeight] = [pageHeight, pageWidth];
+          }
+          
+          // Create PDF
+          const pdf = new jsPDF({
+            orientation: pageLayout,
+            unit: 'mm',
+            format: pageSize
+          });
+          
+          // Process each image
+          for (let i = 0; i < files.length; i++) {
+            if (i > 0) {
+              pdf.addPage(pageSize, pageLayout);
+            }
+            
+            const file = files[i];
+            const imgData = await readFileAsDataURL(file);
+            const img = await loadImage(imgData);
+            
+            // Calculate image dimensions to fit page with margins
+            const maxWidth = pageWidth - (marginSize * 2);
+            const maxHeight = pageHeight - (marginSize * 2);
+            
+            let width = img.width;
+            let height = img.height;
+            
+            // Maintain aspect ratio
+            if (width > maxWidth) {
+              const ratio = maxWidth / width;
+              width *= ratio;
+              height *= ratio;
+            }
+            
+            if (height > maxHeight) {
+              const ratio = maxHeight / height;
+              height *= ratio;
+              width *= ratio;
+            }
+            
+            // Convert from pixels to mm (assuming 96 DPI)
+            width = width * 0.264583;
+            height = height * 0.264583;
+            
+            // Center image on page
+            const x = (pageWidth - width) / 2;
+            const y = (pageHeight - height) / 2;
+            
+            // Add image to PDF
+            pdf.addImage(imgData, 'JPEG', x, y, width, height);
+          }
+          
+          // Save PDF
+          pdf.save(pdfName);
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+          alert('Error generating PDF. Please try again.');
+        } finally {
+          // Hide loading indicator
+          loading.style.display = 'none';
+          generateBtn.disabled = false;
+        }
       });
+
+      // Helper function to read file as Data URL
+      function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+      
+      // Helper function to load image and get dimensions
+      function loadImage(src) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
+        });
+      }
 
       // Clear all
       clearBtn.addEventListener('click', () => {
