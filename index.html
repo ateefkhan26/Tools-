@@ -18,6 +18,8 @@
             --border: #e2e8f0;
             --success: #10b981;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --pdf-red: #f87171;
+            --pdf-bg: #fff5f5;
         }
         
         * {
@@ -179,6 +181,11 @@
             font-size: 3rem;
         }
         
+        .pdf-tool .tool-card-img {
+            background: var(--pdf-bg);
+            color: var(--pdf-red);
+        }
+        
         .tool-card-content {
             padding: 1.5rem;
         }
@@ -202,6 +209,10 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+        }
+        
+        .pdf-tool .tool-card-content a {
+            color: var(--pdf-red);
         }
         
         .tool-card-content a:hover {
@@ -361,55 +372,9 @@
                         <i class="fas fa-image"></i>
                     </div>
                     <div class="tool-card-content">
-    <h3>Image Compressor</h3>
-    <p>Reduce image file size without losing quality</p>
-    <a href="/Tools-/img-compress.html">
-        Use Tool
-        <i class="fas fa-arrow-right"></i>
-    </a>
-</div>
-                
-                <div class="tool-card">
-                    <div class="tool-card-img">
-                        <i class="fas fa-file-image"></i>
-                    </div>
-      <div class="tool-card-content">
-        <div class="tool-icon">
-            <i class="fas fa-exchange-alt"></i>
-        </div>
-        <h3>Image Converter</h3>
-        <p>Convert between JPG, PNG, WEBP and more</p>
-        <a href="Tools-img-converter.html" class="tool-card">
-        <span class="tool-button">
-            Use Tool
-            <i class="fas fa-arrow-right"></i>
-        </span>
-    </div>
-                </div>
-                
-                <div class="tool-card">
-                    <div class="tool-card-img">
-                        <i class="fas fa-crop"></i>
-                    </div>
-                    <div class="tool-card-content">
-                        <h3>Image Resizer</h3>
-                        <p>Resize images to any dimension you need</p>
-                        <a href="#">
-                            Use Tool
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- PDF Tools -->
-                <div class="tool-card">
-                    <div class="tool-card-img">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="tool-card-content">
-                        <h3>PDF Compressor</h3>
-                        <p>Reduce PDF file size while preserving quality</p>
-                        <a href="#">
+                        <h3>Image Compressor</h3>
+                        <p>Reduce image file size without losing quality</p>
+                        <a href="Tools-/img-compress.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -421,9 +386,9 @@
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                     <div class="tool-card-content">
-                        <h3>PDF to JPG</h3>
-                        <p>Convert PDF pages to high-quality JPG images</p>
-                        <a href="#">
+                        <h3>Image Converter</h3>
+                        <p>Convert between JPG, PNG, WEBP and more</p>
+                        <a href="Tools-/img-converter.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -432,12 +397,55 @@
                 
                 <div class="tool-card">
                     <div class="tool-card-img">
+                        <i class="fas fa-crop"></i>
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>Image Resizer</h3>
+                        <p>Resize images to any dimension you need</p>
+                        <a href="Tools-/img-resizer.html">
+                            Use Tool
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PDF Tools -->
+                <div class="tool-card pdf-tool">
+                    <div class="tool-card-img">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>PDF Maker</h3>
+                        <p>Create PDFs from images or documents</p>
+                        <a href="Tools-/pdf-maker.html">
+                            Use Tool
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card pdf-tool">
+                    <div class="tool-card-img">
+                        <i class="fas fa-file-export"></i>
+                    </div>
+                    <div class="tool-card-content">
+                        <h3>PDF to JPG</h3>
+                        <p>Convert PDF pages to high-quality JPG images</p>
+                        <a href="Tools-/pdf-to-jpg.html">
+                            Use Tool
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card pdf-tool">
+                    <div class="tool-card-img">
                         <i class="fas fa-file-word"></i>
                     </div>
                     <div class="tool-card-content">
                         <h3>PDF to Word</h3>
                         <p>Convert PDF files to editable Word documents</p>
-                        <a href="#">
+                        <a href="Tools-/pdf-to-word.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -471,28 +479,28 @@
             </div>
             
             <div class="tools-grid">
-                <div class="tool-card">
+                <div class="tool-card pdf-tool">
                     <div class="tool-card-img">
                         <i class="fas fa-file-archive"></i>
                     </div>
                     <div class="tool-card-content">
                         <h3>PDF Merger</h3>
                         <p>Combine multiple PDF files into one document</p>
-                        <a href="#">
+                        <a href="Tools-/pdf-merger.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
                 
-                <div class="tool-card">
+                <div class="tool-card pdf-tool">
                     <div class="tool-card-img">
                         <i class="fas fa-lock"></i>
                     </div>
                     <div class="tool-card-content">
                         <h3>PDF Protector</h3>
                         <p>Add password protection to your PDF files</p>
-                        <a href="#">
+                        <a href="Tools-/pdf-protector.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -506,7 +514,7 @@
                     <div class="tool-card-content">
                         <h3>Image Collage Maker</h3>
                         <p>Create beautiful collages from your photos</p>
-                        <a href="#">
+                        <a href="Tools-/collage-maker.html">
                             Use Tool
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -528,20 +536,20 @@
                 <div class="footer-column">
                     <h3>Image Tools</h3>
                     <ul>
-                        <li><a href="#">Image Compressor</a></li>
-                        <li><a href="#">Image Converter</a></li>
-                        <li><a href="#">Image Resizer</a></li>
-                        <li><a href="#">Background Remover</a></li>
+                        <li><a href="Tools-/img-compress.html">Image Compressor</a></li>
+                        <li><a href="Tools-/img-converter.html">Image Converter</a></li>
+                        <li><a href="Tools-/img-resizer.html">Image Resizer</a></li>
+                        <li><a href="Tools-/collage-maker.html">Collage Maker</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>PDF Tools</h3>
                     <ul>
-                        <li><a href="#">PDF Compressor</a></li>
-                        <li><a href="#">PDF to Word</a></li>
-                        <li><a href="#">PDF to JPG</a></li>
-                        <li><a href="#">PDF Merger</a></li>
+                        <li><a href="Tools-/pdf-maker.html">PDF Maker</a></li>
+                        <li><a href="Tools-/pdf-to-word.html">PDF to Word</a></li>
+                        <li><a href="Tools-/pdf-to-jpg.html">PDF to JPG</a></li>
+                        <li><a href="Tools-/pdf-merger.html">PDF Merger</a></li>
                     </ul>
                 </div>
                 
@@ -561,5 +569,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1872879160885405" crossorigin="anonymous"></script>
 </body>
 </html>
