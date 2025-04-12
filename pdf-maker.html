@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern PDF Maker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+    <h1 class="text-3xl font-bold text-center mb-4">PDF Maker Tool</h1>
+    <p class="text-center text-sm text-gray-500 mb-6">Create professional PDFs in seconds</p>
+
+    <div class="mb-4">
+      <label for="title" class="block font-medium mb-2">Document Title</label>
+      <input type="text" id="title" class="w-full border p-2 rounded-lg" placeholder="Enter your title here..." />
+    </div>
+
+    <div class="mb-4">
+      <label for="content" class="block font-medium mb-2">Content</label>
+      <textarea id="content" class="w-full h-40 border p-2 rounded-lg" placeholder="Type your content here..."></textarea>
+    </div>
+
+    <button onclick="generatePDF()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">Generate PDF</button>
+
+    <p class="text-sm text-center mt-6 text-gray-500">
+      Made by <span class="font-semibold">ATEEF KHAN</span> — Visit 
+      <a href="https://ateefstore.blogspot.com/?m=0" target="_blank" class="text-blue-600 hover:underline">ATEEF STORE</a>
+    </p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+
+      doc.setFontSize(16);
+      doc.text(title, 10, 20);
+      doc.setFontSize(12);
+      doc.text(content, 10, 30);
+      doc.save("document.pdf");
+    }
+  </script>
+</body>
+</html>
