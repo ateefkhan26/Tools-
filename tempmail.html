@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Temp Mail - Ateef Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --accent: #00ffc3;
+      --text: #ffffff;
+      --card: #1a1a1a;
+      --card-hover: #252525;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: var(--accent);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #emailBox {
+      background-color: var(--card);
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      word-break: break-all;
+      box-shadow: 0 4px 20px rgba(0, 255, 195, 0.15);
+      border: 1px solid rgba(0, 255, 195, 0.1);
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #emailBox:hover {
+      box-shadow: 0 4px 25px rgba(0, 255, 195, 0.25);
+      transform: translateY(-2px);
+    }
+
+    #emailBox:active {
+      transform: translateY(0);
+    }
+
+    #emailBox::after {
+      content: "Click to copy";
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #emailBox:hover::after {
+      opacity: 1;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background-color: #00e6b0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 230, 176, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #inbox {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .email {
+      background-color: var(--card);
+      margin-bottom: 1rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .email:hover {
+      background-color: var(--card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-left: 3px solid var(--accent);
+    }
+
+    .email strong {
+      color: var(--accent);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 1.5rem 0;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    .author-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .author-link:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .author-link::after {
+      content: "Visit Ateef Store";
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .author-link:hover::after {
+      opacity: 1;
+      bottom: -40px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Temporary Email </h1>
+
+  <div id="emailBox">your-random-email@tempmail.com</div>
+  
+  <div class="button-group">
+    <button onclick="generateEmail()">
+      <i class="fas fa-sync-alt"></i> Generate New Email
+    </button>
+    <button onclick="copyEmail()">
+      <i class="fas fa-copy"></i> Copy Email
+    </button>
+  </div>
+
+  <div id="inbox">
+    <h2>Inbox <span style="font-size: 0.9rem; color: #aaa;">(Refresh to check new emails)</span></h2>
+    <div class="email">
+      <strong>From:</strong> noreply@example.com<br>
+      <strong>Subject:</strong> Welcome to Temp Mail<br>
+      <p>This is a sample email message. Real-time inbox can be integrated with an API.</p>
+    </div>
+  </div>
+
+  <footer>
+    Created by 
+    <a href="https://ateefstore.blogspot.com/?m=0" class="author-link" target="_blank">
+      <i class="fas fa-user-astronaut"></i> 𝗔 𝗧 𝗘 𝗘 𝗙   𝗞 𝗛 𝗔 𝗡²⁶
+    </a>
+  </footer>
+
+  <script>
+    function generateEmail() {
+      const random = Math.random().toString(36).substring(2, 12);
+      const emailBox = document.getElementById("emailBox");
+      emailBox.innerText = `${random}@tempmail.com`;
+      emailBox.classList.add("pulse");
+      setTimeout(() => emailBox.classList.remove("pulse"), 500);
+    }
+
+    function copyEmail() {
+      const email = document.getElementById("emailBox").innerText;
+      navigator.clipboard.writeText(email).then(() => {
+        const emailBox = document.getElementById("emailBox");
+        emailBox.classList.add("pulse");
+        setTimeout(() => emailBox.classList.remove("pulse"), 500);
+      });
+    }
+
+    // Initialize with a random email
+    window.onload = generateEmail;
+
+    // Click to copy functionality
+    document.getElementById("emailBox").addEventListener("click", copyEmail);
+  </script>
+
+</body>
+</html>
