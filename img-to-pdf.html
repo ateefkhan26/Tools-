@@ -19,6 +19,7 @@
       --radius: 12px;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --success: #10b981;
     }
 
     * {
@@ -29,9 +30,11 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f1f5f9;
+      background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
       color: var(--dark);
       line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 2rem;
     }
 
     .container {
@@ -48,17 +51,51 @@
       border-radius: 0 0 var(--radius) var(--radius);
       box-shadow: var(--shadow);
       margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary), #ff6b6b);
+      animation: progress 3s infinite linear;
+    }
+
+    @keyframes progress {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     header h1 {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
     }
 
     header p {
       opacity: 0.9;
       font-weight: 300;
+      position: relative;
+      z-index: 2;
+    }
+
+    .converter-wrapper {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .converter-wrapper {
+        flex-direction: column;
+      }
     }
 
     .converter-card {
@@ -66,7 +103,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 2rem;
-      margin-bottom: 2rem;
+      flex: 1;
     }
 
     .upload-area {
@@ -78,11 +115,17 @@
       transition: var(--transition);
       margin-bottom: 1.5rem;
       background: #f8fafc;
+      position: relative;
     }
 
     .upload-area:hover {
       border-color: var(--primary);
       background: rgba(99, 102, 241, 0.05);
+    }
+
+    .upload-area.active {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.05);
     }
 
     .upload-area i {
@@ -98,6 +141,22 @@
 
     .upload-area p {
       color: var(--gray);
+    }
+
+    .upload-area .file-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
     }
 
     #file-input {
@@ -116,6 +175,12 @@
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+    }
+
+    .preview-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
 
     .preview-item img {
@@ -147,8 +212,28 @@
       opacity: 1;
     }
 
+    .preview-item .image-number {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+
     .options {
       margin-top: 2rem;
+    }
+
+    .options-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+      display: inline-block;
     }
 
     .form-group {
@@ -159,6 +244,13 @@
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group label i {
+      color: var(--primary);
     }
 
     .form-control {
@@ -168,6 +260,7 @@
       border-radius: 8px;
       font-size: 1rem;
       transition: var(--transition);
+      background: #f8fafc;
     }
 
     .form-control:focus {
@@ -214,11 +307,23 @@
       background: #e67e22;
     }
 
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-success:hover {
+      background: #059669;
+    }
+
     .footer {
       text-align: center;
       margin-top: 3rem;
       color: var(--gray);
       font-size: 0.9rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
 
     .footer a {
@@ -236,12 +341,18 @@
       letter-spacing: 1px;
       margin-top: 0.5rem;
       display: inline-block;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .loading {
       display: none;
       text-align: center;
       margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: var(--radius);
     }
 
     .spinner {
@@ -257,6 +368,85 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+
+    .info-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      flex: 0 0 300px;
+    }
+
+    @media (max-width: 768px) {
+      .info-card {
+        flex: 1;
+      }
+    }
+
+    .info-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-card ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+
+    .info-card li {
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .info-card li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .success-message {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+    }
+
+    .success-message i {
+      color: var(--success);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .range-value {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .page-size-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .page-size-info i {
+      color: var(--primary);
     }
 
     @media (max-width: 768px) {
@@ -281,62 +471,99 @@
 <body>
   <header>
     <h1>Image to PDF Converter</h1>
-    <p>Create beautiful PDFs from your images in seconds</p>
+    <p>Create perfect A4 PDFs from your images</p>
   </header>
 
   <div class="container">
-    <div class="converter-card">
-      <div class="upload-area" id="upload-area">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <h3>Upload Your Images</h3>
-        <p>Drag & drop images here or click to browse</p>
-        <input type="file" id="file-input" accept="image/*" multiple>
+    <div class="converter-wrapper">
+      <div class="converter-card">
+        <div class="upload-area" id="upload-area">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h3>Upload Your Images</h3>
+          <p>Drag & drop images here or click to browse</p>
+          <div class="file-count">0</div>
+          <input type="file" id="file-input" accept="image/*" multiple>
+        </div>
+
+        <div id="preview-container" class="preview-container" style="display: none;">
+          <!-- Preview images will be added here -->
+        </div>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Generating PDF with perfect A4 fit...</p>
+        </div>
+
+        <div class="options">
+          <h3 class="options-title"><i class="fas fa-cog"></i> PDF Settings</h3>
+          
+          <div class="form-group">
+            <label for="pdf-name"><i class="fas fa-file-signature"></i> PDF File Name</label>
+            <input type="text" id="pdf-name" class="form-control" placeholder="my-document.pdf" value="ateef-store-document.pdf">
+          </div>
+
+          <div class="form-group">
+            <label for="page-size"><i class="fas fa-expand"></i> Page Size</label>
+            <select id="page-size" class="form-control">
+              <option value="a4">A4 (210 × 297 mm)</option>
+              <option value="letter">Letter (8.5 × 11 in)</option>
+              <option value="legal">Legal (8.5 × 14 in)</option>
+            </select>
+            <div class="page-size-info">
+              <i class="fas fa-info-circle"></i> A4 recommended for best fit
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="page-layout"><i class="fas fa-vector-square"></i> Layout</label>
+            <select id="page-layout" class="form-control">
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="margin-size"><i class="fas fa-border-all"></i> Margin Size</label>
+            <input type="range" id="margin-size" class="form-control" min="0" max="30" value="15">
+            <div class="range-value">
+              <span>0 mm</span>
+              <span id="margin-value">15 mm</span>
+              <span>30 mm</span>
+            </div>
+          </div>
+
+          <button id="generate-btn" class="btn btn-success btn-block">
+            <i class="fas fa-file-pdf"></i> Generate PDF
+          </button>
+
+          <button id="clear-btn" class="btn btn-secondary btn-block" style="margin-top: 1rem;">
+            <i class="fas fa-trash-alt"></i> Clear All Images
+          </button>
+        </div>
+        
+        <div id="success-message" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <h3>PDF Generated Successfully!</h3>
+          <p>Your images are perfectly aligned on A4 sheets</p>
+        </div>
       </div>
-
-      <div id="preview-container" class="preview-container" style="display: none;">
-        <!-- Preview images will be added here -->
-      </div>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>Generating PDF...</p>
-      </div>
-
-      <div class="options">
-        <div class="form-group">
-          <label for="pdf-name">PDF File Name</label>
-          <input type="text" id="pdf-name" class="form-control" placeholder="my-document.pdf" value="my-document.pdf">
+      
+      <div class="info-card">
+        <h3><i class="fas fa-lightbulb"></i> Perfect A4 Fit Tips</h3>
+        <ul>
+          <li>All images are automatically scaled to fit perfectly on A4 pages</li>
+          <li>Margins ensure your content doesn't get cut off during printing</li>
+          <li>Portrait layout works best for vertical images</li>
+          <li>Landscape layout works best for horizontal images</li>
+          <li>15mm margin is recommended for best results</li>
+          <li>Images are centered automatically for professional look</li>
+          <li>Each image is placed on a separate page by default</li>
+        </ul>
+        
+        <div style="margin-top: 2rem;">
+          <h3><i class="fas fa-history"></i> Recent Activity</h3>
+          <p style="margin-top: 0.5rem; font-style: italic; color: var(--gray);">No recent conversions yet</p>
         </div>
-
-        <div class="form-group">
-          <label for="page-size">Page Size</label>
-          <select id="page-size" class="form-control">
-            <option value="a4">A4 (210 × 297 mm)</option>
-            <option value="letter">Letter (8.5 × 11 in)</option>
-            <option value="legal">Legal (8.5 × 14 in)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="page-layout">Layout</label>
-          <select id="page-layout" class="form-control">
-            <option value="portrait">Portrait</option>
-            <option value="landscape">Landscape</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="margin-size">Margin Size (mm)</label>
-          <input type="range" id="margin-size" class="form-control" min="0" max="30" value="10">
-        </div>
-
-        <button id="generate-btn" class="btn btn-block">
-          <i class="fas fa-file-pdf"></i> Generate PDF
-        </button>
-
-        <button id="clear-btn" class="btn btn-secondary btn-block" style="margin-top: 1rem;">
-          <i class="fas fa-trash-alt"></i> Clear All
-        </button>
       </div>
     </div>
 
@@ -357,7 +584,16 @@
       const generateBtn = document.getElementById('generate-btn');
       const clearBtn = document.getElementById('clear-btn');
       const loading = document.getElementById('loading');
+      const successMessage = document.getElementById('success-message');
+      const fileCount = document.querySelector('.file-count');
+      const marginSize = document.getElementById('margin-size');
+      const marginValue = document.getElementById('margin-value');
       let files = [];
+      
+      // Update margin value display
+      marginSize.addEventListener('input', function() {
+        marginValue.textContent = `${this.value} mm`;
+      });
 
       // Handle drag and drop
       uploadArea.addEventListener('dragover', (e) => {
@@ -397,6 +633,8 @@
       function handleFiles(selectedFiles) {
         files = Array.from(selectedFiles).filter(file => file.type.startsWith('image/'));
         updatePreview();
+        fileCount.textContent = files.length;
+        uploadArea.classList.add('active');
       }
 
       // Update preview
@@ -414,6 +652,7 @@
               
               previewItem.innerHTML = `
                 <img src="${e.target.result}" alt="Preview">
+                <div class="image-number">${index + 1}</div>
                 <button class="remove-btn" data-index="${index}">
                   <i class="fas fa-times"></i>
                 </button>
@@ -426,12 +665,18 @@
                 e.stopPropagation();
                 files.splice(index, 1);
                 updatePreview();
+                fileCount.textContent = files.length;
+                if (files.length === 0) {
+                  uploadArea.classList.remove('active');
+                }
               });
             };
             reader.readAsDataURL(file);
           });
         } else {
           previewContainer.style.display = 'none';
+          uploadArea.classList.remove('active');
+          fileCount.textContent = '0';
         }
       }
 
@@ -444,6 +689,7 @@
         
         // Show loading indicator
         loading.style.display = 'block';
+        successMessage.style.display = 'none';
         generateBtn.disabled = true;
         
         try {
@@ -451,7 +697,7 @@
           const pdfName = document.getElementById('pdf-name').value.replace('.pdf', '') + '.pdf';
           const pageSize = document.getElementById('page-size').value;
           const pageLayout = document.getElementById('page-layout').value;
-          const marginSize = parseInt(document.getElementById('margin-size').value);
+          const margin = parseInt(document.getElementById('margin-size').value);
           
           // Get page dimensions in mm
           let pageWidth, pageHeight;
@@ -496,39 +742,43 @@
             const img = await loadImage(imgData);
             
             // Calculate image dimensions to fit page with margins
-            const maxWidth = pageWidth - (marginSize * 2);
-            const maxHeight = pageHeight - (marginSize * 2);
+            const maxWidth = pageWidth - (margin * 2);
+            const maxHeight = pageHeight - (margin * 2);
             
-            let width = img.width;
-            let height = img.height;
+            // Calculate aspect ratios
+            const imgAspectRatio = img.width / img.height;
+            const pageAspectRatio = maxWidth / maxHeight;
             
-            // Maintain aspect ratio
-            if (width > maxWidth) {
-              const ratio = maxWidth / width;
-              width *= ratio;
-              height *= ratio;
+            let renderWidth, renderHeight;
+            
+            // Determine best fit
+            if (imgAspectRatio > pageAspectRatio) {
+              // Image is wider than page area
+              renderWidth = maxWidth;
+              renderHeight = maxWidth / imgAspectRatio;
+            } else {
+              // Image is taller than page area
+              renderHeight = maxHeight;
+              renderWidth = maxHeight * imgAspectRatio;
             }
             
-            if (height > maxHeight) {
-              const ratio = maxHeight / height;
-              height *= ratio;
-              width *= ratio;
-            }
-            
-            // Convert from pixels to mm (assuming 96 DPI)
-            width = width * 0.264583;
-            height = height * 0.264583;
-            
-            // Center image on page
-            const x = (pageWidth - width) / 2;
-            const y = (pageHeight - height) / 2;
+            // Center the image on the page
+            const x = margin + (maxWidth - renderWidth) / 2;
+            const y = margin + (maxHeight - renderHeight) / 2;
             
             // Add image to PDF
-            pdf.addImage(imgData, 'JPEG', x, y, width, height);
+            pdf.addImage(imgData, 'JPEG', x, y, renderWidth, renderHeight);
           }
           
           // Save PDF
           pdf.save(pdfName);
+          
+          // Show success message
+          successMessage.style.display = 'block';
+          loading.style.display = 'none';
+          
+          // Scroll to success message
+          successMessage.scrollIntoView({ behavior: 'smooth' });
         } catch (error) {
           console.error('Error generating PDF:', error);
           alert('Error generating PDF. Please try again.');
@@ -564,6 +814,9 @@
         files = [];
         fileInput.value = '';
         updatePreview();
+        fileCount.textContent = '0';
+        uploadArea.classList.remove('active');
+        successMessage.style.display = 'none';
       });
     });
   </script>
